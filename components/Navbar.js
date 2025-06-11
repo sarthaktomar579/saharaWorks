@@ -28,9 +28,12 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-900 text-white flex justify-between items-center px-4 md:h-16 flex-col md:flex-row">
-      <Link href={"/"} className="logo font-bold text-lg flex justify-center items-baseline gap-2">
-        <Image src="/tea.gif" alt="Logo" width={28} height={28} />
-        <span className="md:text-2xl text-2xl my-3 md:my-0">GetMeAChai!</span>
+      <Link href={"/"} className="logo font-bold text-lg flex justify-center gap-2">
+        
+       <span className="text-4xl font-extrabold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+  सहाराWorks
+</span>
+<Image src="/logo.png" alt="Logo" width={28} height={28} />
       </Link>
 
       <div className="relative flex flex-col md:block gap-4">

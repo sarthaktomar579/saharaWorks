@@ -6,9 +6,10 @@ export default function Home() {
     <>
       <div className="flex flex-col justify-center items-center gap-4 text-white h-[44vh] px-5 md:px-0 text-xs md:text-base">
         <div className="md:text-5xl font-bold flex items-center justify-center md:gap-5 gap-2 text-3xl">
-          <span className="text-4xl font-extrabold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
-            सहाराWorks
-          </span>
+         <span className="text-4xl font-extrabold italic tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
+  सहाराWorks
+</span>
+
           <Image
             width={48}
             height={48}
@@ -24,7 +25,6 @@ export default function Home() {
         <p className="text-center md:text-left">
           A place where your fans can help you. Unleash the power of your fans and get your projects funded.
         </p>
-
         <div>
           <Link href={"/login"}>
             <button
@@ -49,7 +49,9 @@ export default function Home() {
       <div className="bg-white opacity-10 h-1"></div>
 
       <div className="container mx-auto text-white pb-14 pt-16 px-10">
-        <h2 className="text-3xl font-bold text-center mb-10">Your Fans can support you</h2>
+        <h2 className="text-3xl font-bold text-center mb-10">
+          Your Fans can support you
+        </h2>
 
         <div className="flex gap-2 justify-evenly">
           {/* First Item */}
@@ -99,14 +101,14 @@ export default function Home() {
         <h2 className="text-3xl font-bold text-center mb-10">Learn more about us</h2>
 
         <div className="w-[90%] h-[40vh] md:w-[50%] md:h-[50vh] lg:w-[50%] lg:h-[50vh] xl:w-[50%] xl:h-[50vh]">
-          <video
-            className="w-full h-full rounded-lg shadow-lg"
-            controls
-            // Optional thumbnail
-          >
-            <source src="/recSW.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
+          <iframe
+            className="w-full h-full"
+            src="https://www.youtube.com/embed/iv8rSLsi1xo?si=pAbsY33A4j3rqLam"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          ></iframe>
         </div>
       </div>
     </>

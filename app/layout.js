@@ -7,7 +7,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Get me a Chai- Fund your projects with a chai",
+  title: "सहाराWorks- Fund your projects",
   description: "This website is a crowd funding platform for creators",
 };
 
