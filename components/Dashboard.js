@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSession, signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { fetchuser, updateProfile } from "@/actions/useractions";
 import { ToastContainer, toast } from "react-toastify";
@@ -8,39 +8,38 @@ import "react-toastify/dist/ReactToastify.css";
 import { Bounce } from "react-toastify";
 
 const Dashboard = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (session?.user?.name) {
-        try {
-          const userData = await fetchuser(session.user.name);
-          setForm(userData);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-          toast.error("Failed to fetch user data. Please try again.", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "light",
-            transition: Bounce,
-          });
-        }
+      try {
+        const userData = await fetchuser(session.user.name);
+        setForm(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        toast.error("Failed to fetch user data. Please try again.", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+          transition: Bounce,
+        });
       }
     };
 
-    if (!session) {
+    if (status === "loading") return; // Wait until session is ready
+    if (status === "unauthenticated") {
       router.push("/login");
-    } else {
+    } else if (status === "authenticated" && session?.user?.name) {
       fetchUserData();
     }
-  }, [router, session]);
+  }, [router, session, status]);
 
   const handleChange = (e) => {
     setForm((prevState) => ({
@@ -80,6 +79,15 @@ const Dashboard = () => {
       setLoading(false);
     }
   };
+
+  // Show loading while session is being checked
+  if (status === "loading" || !session) {
+    return (
+      <div className="text-white text-center mt-10">
+        Loading your dashboard...
+      </div>
+    );
+  }
 
   return (
     <>
