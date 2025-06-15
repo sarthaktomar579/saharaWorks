@@ -38,7 +38,4 @@ export const POST = async(req) =>{
         return NextResponse.error("Payment verification failed")
     }
 
-
-
-
 }
