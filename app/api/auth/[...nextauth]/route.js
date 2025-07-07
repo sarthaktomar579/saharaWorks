@@ -1,52 +1,60 @@
-import NextAuth from "next-auth"
-import GitHubProvider from "next-auth/providers/github"
-import mongoose from "mongoose";
-import User from "@/models/User";
-import Payment from "@/models/Payment";
+import NextAuth from "next-auth";
+import GitHubProvider from "next-auth/providers/github";
 import connectDb from "@/db/connectDb";
+import User from "@/models/User";
 
-export const authoptions = NextAuth({
-  // Configure one or more authentication providers
+const authOptions = {
   providers: [
     GitHubProvider({
       clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET
+      clientSecret: process.env.GITHUB_SECRET,
     }),
-    // ...add more providers here
   ],
 
   callbacks: {
-    async signIn({ user, account, profile, email, credentials }) {
-      if(account.provider == "github"){
-        await connectDb()
-        //check if the user already exists in the database 
-        const currentUser = await User.findOne({email: email})
-        if(!currentUser)
-        {
-            //create a new user
-            const newUser = await User.create({
-               email: user.email,
-               username: user.email.split("@")[0],
-            })
+    async signIn({ user, account }) {
+      if (account.provider === "github") {
+        try {
+          await connectDb();
 
+          const existingUser = await User.findOne({ email: user.email });
+
+          if (!existingUser) {
+            await User.create({
+              email: user.email,
+              username: user.email.split("@")[0],
+            });
+          }
+
+          return true;
+        } catch (err) {
+          console.error("❌ Error during sign-in:", err);
+          return false;
         }
-        
-        return true;
+      }
+      return true;
+    },
+
+    async session({ session }) {
+      try {
+        await connectDb();
+
+        const dbUser = await User.findOne({ email: session.user.email });
+        if (dbUser) {
+          session.user.name = dbUser.username;
+        }
+
+        return session;
+      } catch (err) {
+        console.error("❌ Error during session callback:", err);
+        return session;
       }
     },
+  },
 
-    async session({ session, user, token }) {
-      const dbUser = await User.findOne({email: session.user.email})
-      console.log(dbUser);
-      
-      session.user.name = dbUser.username
-      console.log(session.user.name);
-      
-      return session
-    },
+  secret: process.env.NEXTAUTH_SECRET,
+};
 
-  }
+const handler = NextAuth(authOptions);
 
-})
-
-export { authoptions as GET, authoptions as POST }
+export { handler as GET, handler as POST };

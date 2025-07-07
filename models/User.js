@@ -1,16 +1,17 @@
 import mongoose from "mongoose";
-const {Schema, model} = mongoose;
+const { Schema, model } = mongoose;
 
 const UserSchema = new Schema({
-    email: {type: String, required: true},
-    name: {type: String},
-    username: {type: String, required: true},
-    profilepic: {type: String},
-    coverpic: {type: String},
-    razorpayid: {type: String},
-    razorpaysecret: {type: String},
-    createdAt: {type: Date, default: Date.now},
-    updatedAt: {type: Date, default: Date.now},
-})
- 
+  email: { type: String, required: true, unique: true },
+  name: { type: String }, // optional full name
+  username: { type: String, required: true }, // required username
+  profilepic: { type: String, default: "" },
+  coverpic: { type: String, default: "" },
+  razorpayid: { type: String, default: "" },
+  razorpaysecret: { type: String, default: "" },
+}, {
+  timestamps: true, // Automatically adds createdAt and updatedAt
+});
+
+// Prevent redefinition in dev
 export default mongoose.models.User || model("User", UserSchema);
